@@ -3,7 +3,7 @@ import 'config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ensureInitialized();
+  await init();
   runApp(const MyApp());
 }
 
