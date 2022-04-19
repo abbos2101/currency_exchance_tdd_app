@@ -11,11 +11,15 @@ dependencies:
     sdk: flutter
   bloc_concurrency: ^0.2.0
   cupertino_icons: ^1.0.2
+  dartz: ^0.10.1
+  data_connection_checker: ^0.3.4
   dio: ^4.0.6
   easy_localization: ^3.0.0
+  equatable: ^2.0.3
   flutter_bloc: ^8.0.1
   get_it: ^7.2.0
   provider: ^6.0.2
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
