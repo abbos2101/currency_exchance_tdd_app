@@ -1,8 +1,8 @@
 import 'package:currency_exchance_tdd_app/core/error/exceptions.dart';
 import 'package:currency_exchance_tdd_app/core/error/failures.dart';
 import 'package:currency_exchance_tdd_app/core/network/network_info.dart';
-import 'package:currency_exchance_tdd_app/features/exchange/data/data_sources/currency_local_data_source.dart';
-import 'package:currency_exchance_tdd_app/features/exchange/data/data_sources/currency_remote_data_source.dart';
+import 'package:currency_exchance_tdd_app/features/exchange/data/data_sources/currency/currency_local_data_source.dart';
+import 'package:currency_exchance_tdd_app/features/exchange/data/data_sources/currency/currency_remote_data_source.dart';
 import 'package:currency_exchance_tdd_app/features/exchange/domain/entities/currency_entity.dart';
 import 'package:currency_exchance_tdd_app/features/exchange/domain/repositories/currency_repository.dart';
 import 'package:dartz/dartz.dart';
