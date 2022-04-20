@@ -5,9 +5,12 @@ import 'package:currency_exchance_tdd_app/features/exchange/data/models/currency
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class CurrencyLocalDataSource {
-  Future<List<CurrencyModel>> getCurrenciesByDate(DateTime date);
+  Future<List<CurrencyModel>> getCurrenciesByDate(
+    DateTime date, {
+    required String lang,
+  });
 
-  Future<List<CurrencyModel>> getCurrenciesLast();
+  Future<List<CurrencyModel>> getCurrenciesLast({required String lang});
 
   Future<void> saveCurrenciesByDate(
     List<CurrencyModel> currencies,
@@ -23,23 +26,26 @@ class CurrencyLocalDataSourceImpl implements CurrencyLocalDataSource {
   const CurrencyLocalDataSourceImpl({required this.pref});
 
   @override
-  Future<List<CurrencyModel>> getCurrenciesByDate(DateTime date) async {
+  Future<List<CurrencyModel>> getCurrenciesByDate(
+    DateTime date, {
+    required String lang,
+  }) async {
     final value = pref.getString(
       "$CURRENCY_BY_DATE ${date.year}-${date.month}-${date.day}",
     );
     if (value != null) {
       final data = (jsonDecode(value) as List);
-      return data.map((e) => CurrencyModel.fromJson(e)).toList();
+      return data.map((e) => CurrencyModel.fromJson(e, lang: lang)).toList();
     }
     throw CacheException();
   }
 
   @override
-  Future<List<CurrencyModel>> getCurrenciesLast() async {
+  Future<List<CurrencyModel>> getCurrenciesLast({required String lang}) async {
     final value = pref.getString(CURRENCY_BY_DATE);
     if (value != null) {
       final data = (jsonDecode(value) as List);
-      return data.map((e) => CurrencyModel.fromJson(e)).toList();
+      return data.map((e) => CurrencyModel.fromJson(e, lang: lang)).toList();
     }
     throw CacheException();
   }

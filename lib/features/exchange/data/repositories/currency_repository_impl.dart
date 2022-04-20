@@ -20,17 +20,24 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
 
   @override
   Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesByDate(
-    DateTime date,
-  ) async {
+    DateTime date, {
+    required String lang,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await remoteDataSource.getCurrenciesByDate(date));
+        return Right(await remoteDataSource.getCurrenciesByDate(
+          date,
+          lang: lang,
+        ));
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        return Right(await localDataSource.getCurrenciesByDate(date));
+        return Right(await localDataSource.getCurrenciesByDate(
+          date,
+          lang: lang,
+        ));
       } on CacheException {
         return Left(CacheFailure());
       }
@@ -38,16 +45,18 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
   }
 
   @override
-  Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesLast() async {
+  Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesLast({
+    required String lang,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await remoteDataSource.getCurrenciesLast());
+        return Right(await remoteDataSource.getCurrenciesLast(lang: lang));
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        return Right(await localDataSource.getCurrenciesLast());
+        return Right(await localDataSource.getCurrenciesLast(lang: lang));
       } on CacheException {
         return Left(CacheFailure());
       }

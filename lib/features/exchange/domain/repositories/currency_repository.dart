@@ -4,8 +4,11 @@ import 'package:dartz/dartz.dart';
 
 abstract class CurrencyRepository {
   Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesByDate(
-    DateTime date,
-  );
+    DateTime date, {
+    required String lang,
+  });
 
-  Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesLast();
+  Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesLast({
+    required String lang,
+  });
 }

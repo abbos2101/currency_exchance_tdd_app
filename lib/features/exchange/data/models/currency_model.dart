@@ -34,7 +34,7 @@ class CurrencyModel extends CurrencyEntity {
 
   factory CurrencyModel.fromJson(
     Map<String, dynamic> json, {
-    String lang = "UZ",
+    required String lang,
   }) {
     String name = "";
     switch (name) {

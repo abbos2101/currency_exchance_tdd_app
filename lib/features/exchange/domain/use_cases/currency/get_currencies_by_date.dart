@@ -12,15 +12,16 @@ class GetCurrenciesByDate implements UseCase<List<CurrencyEntity>, Params> {
 
   @override
   Future<Either<Failure, List<CurrencyEntity>>> call(Params params) async {
-    return await repository.getCurrenciesByDate(params.date);
+    return await repository.getCurrenciesByDate(params.date, lang: params.lang);
   }
 }
 
 class Params extends Equatable {
   final DateTime date;
+  final String lang;
 
-  const Params({required this.date});
+  const Params({required this.date, required this.lang});
 
   @override
-  List<Object?> get props => [date];
+  List<Object?> get props => [date, lang];
 }
