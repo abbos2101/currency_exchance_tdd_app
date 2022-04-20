@@ -4,30 +4,30 @@ abstract class CurrencyState extends Equatable {
   const CurrencyState();
 }
 
-class Loading extends CurrencyState {
+class LoadingState extends CurrencyState {
   @override
   List<Object> get props => [];
 }
 
-class Success extends CurrencyState {
+class SuccessState extends CurrencyState {
   final List<CurrencyEntity> currencies;
 
-  const Success(this.currencies);
+  const SuccessState(this.currencies);
 
   @override
   List<Object> get props => [currencies];
 }
 
-class Fail extends CurrencyState {
+class FailState extends CurrencyState {
   final String message;
 
-  const Fail(this.message);
+  const FailState(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class Empty extends CurrencyState {
+class EmptyState extends CurrencyState {
   @override
   List<Object> get props => [];
 }

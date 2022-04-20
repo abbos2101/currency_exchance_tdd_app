@@ -20,24 +20,23 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
 
   @override
   Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesByDate(
-    DateTime date, {
-    required String lang,
-  }) async {
+    DateTime date,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await remoteDataSource.getCurrenciesByDate(
-          date,
-          lang: lang,
-        ));
+        final currencies = await localDataSource.getCurrenciesByDate(date);
+        return Right(currencies);
+      } catch (_) {}
+      try {
+        final currencies = await remoteDataSource.getCurrenciesByDate(date);
+        await localDataSource.saveCurrenciesByDate(currencies, date);
+        return Right(currencies);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        return Right(await localDataSource.getCurrenciesByDate(
-          date,
-          lang: lang,
-        ));
+        return Right(await localDataSource.getCurrenciesByDate(date));
       } on CacheException {
         return Left(CacheFailure());
       }
@@ -45,18 +44,21 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
   }
 
   @override
-  Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesLast({
-    required String lang,
-  }) async {
+  Future<Either<Failure, List<CurrencyEntity>>> getCurrenciesLast() async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await remoteDataSource.getCurrenciesLast(lang: lang));
+        final currencies = await remoteDataSource.getCurrenciesLast();
+        await localDataSource.saveCurrenciesByDate(currencies, DateTime.now());
+        return Right(currencies);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
-        return Right(await localDataSource.getCurrenciesLast(lang: lang));
+        final currencies = await localDataSource.getCurrenciesByDate(
+          DateTime.now(),
+        );
+        return Right(currencies);
       } on CacheException {
         return Left(CacheFailure());
       }

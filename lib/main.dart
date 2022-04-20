@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'config.dart';
+import 'di.dart';
+import 'package:currency_exchance_tdd_app/features/exchange/presentation/pages/currency_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const Scaffold(),
+      home: const CurrencyPage(),
     );
   }
 }
