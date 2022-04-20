@@ -1,12 +1,12 @@
-import 'package:currency_exchance_tdd_app/core/network/api.dart';
+import 'package:currency_exchance_tdd_app/core/utils/words.dart';
 import 'package:currency_exchance_tdd_app/di.dart';
-import 'package:currency_exchance_tdd_app/widgets/custom_safe_area.dart';
-import 'package:dio/dio.dart';
+import 'package:currency_exchance_tdd_app/features/exchange/presentation/dialogs/choose_language_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../bloc/currency/currency_bloc.dart';
+import '../widgets/currency_card_item.dart';
 
 class CurrencyPage extends StatefulWidget {
   const CurrencyPage({Key? key}) : super(key: key);
@@ -35,7 +35,26 @@ class _CurrencyPageState extends State<CurrencyPage> {
     return BlocProvider.value(
       value: bloc,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+            ),
+          ),
+          centerTitle: false,
+          title: Text(Words.name.tr()),
+          actions: [
+            GestureDetector(
+              onTap: () => ChooseLanguageDialog.show(context),
+              behavior: HitTestBehavior.opaque,
+              child: const Icon(Icons.language),
+            ),
+            const SizedBox(width: 12),
+          ],
+        ),
         body: BlocBuilder<CurrencyBloc, CurrencyState>(
           builder: (context, state) {
             if (state is LoadingState) {
@@ -50,17 +69,16 @@ class _CurrencyPageState extends State<CurrencyPage> {
               );
             }
             if (state is SuccessState) {
-              return ListView.separated(
+              return ListView.builder(
                 itemCount: state.currencies.length,
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                separatorBuilder: (_, i) => const Divider(),
                 itemBuilder: (context, i) {
-                  final model = state.currencies[i];
-                  return Text(
-                    "${i + 1}\n"
-                    "Name: ${model.nameUZ}"
-                    "Rate: ${model.rate}",
+                  return CurrencyCardItem(
+                    model: state.currencies[i],
+                    lang: context.locale.countryCode ?? "UZ",
+                    open: i == state.index,
+                    onTap: () => bloc.add(OnTapItemEvent(index: i)),
+                    onTapCalculate: () {},
                   );
                 },
               );

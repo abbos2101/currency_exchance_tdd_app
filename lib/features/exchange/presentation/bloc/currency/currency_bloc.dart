@@ -26,11 +26,16 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
           await _emitGetCurrenciesByDateEvent(event, emit);
         } else if (event is GetCurrenciesLastEvent) {
           await _emitGetCurrenciesLastEvent(event, emit);
+        } else if (event is OnTapItemEvent) {
+          await _emitOnTapItemEvent(event, emit);
         }
       },
       transformer: sequential(),
     );
   }
+
+  List<CurrencyEntity> _currencies = [];
+  int _index = -1;
 
   Future<void> _emitGetCurrenciesByDateEvent(
     GetCurrenciesByDateEvent event,
@@ -41,7 +46,10 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     final result = await currenciesByDate.execute(params);
     result.fold(
       (l) => emit(FailState("$l")),
-      (r) => r.isNotEmpty ? emit(SuccessState(r)) : emit(EmptyState()),
+      (r) {
+        _currencies = r;
+        r.isNotEmpty ? emit(SuccessState(r, _index)) : emit(EmptyState());
+      },
     );
   }
 
@@ -53,7 +61,18 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     final result = await currenciesLast.execute(NoParams());
     result.fold(
       (l) => emit(FailState("$l")),
-      (r) => r.isNotEmpty ? emit(SuccessState(r)) : emit(EmptyState()),
+      (r) {
+        _currencies = r;
+        r.isNotEmpty ? emit(SuccessState(r, _index)) : emit(EmptyState());
+      },
     );
+  }
+
+  Future<void> _emitOnTapItemEvent(
+    OnTapItemEvent event,
+    Emitter<CurrencyState> emit,
+  ) async {
+    _index = event.index == _index ? -1 : event.index;
+    emit(SuccessState(_currencies, _index));
   }
 }

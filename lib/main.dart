@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'di.dart';
 import 'package:currency_exchance_tdd_app/features/exchange/presentation/pages/currency_page.dart';
@@ -5,7 +6,18 @@ import 'package:currency_exchance_tdd_app/features/exchange/presentation/pages/c
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
-  runApp(const MyApp());
+  await EasyLocalization.ensureInitialized();
+  runApp(EasyLocalization(
+    supportedLocales: const [
+      Locale("uz", "UZ"),
+      Locale("uz", "UZC"),
+      Locale("ru", "RU"),
+      Locale("en", "EN"),
+    ],
+    path: 'assets/locals',
+    fallbackLocale: const Locale("uz", "UZ"),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +27,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
+      locale: context.locale,
       home: const CurrencyPage(),
     );
   }
