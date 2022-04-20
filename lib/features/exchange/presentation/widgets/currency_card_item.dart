@@ -1,10 +1,10 @@
 import 'package:currency_exchance_tdd_app/core/utils/words.dart';
 import 'package:currency_exchance_tdd_app/features/exchange/domain/entities/currency_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyCardItem extends StatelessWidget {
   final CurrencyEntity model;
-  final String lang;
   final bool open;
   final Function()? onTap;
   final Function()? onTapCalculate;
@@ -12,7 +12,6 @@ class CurrencyCardItem extends StatelessWidget {
   const CurrencyCardItem({
     Key? key,
     required this.model,
-    required this.lang,
     required this.open,
     this.onTap,
     this.onTapCalculate,
@@ -21,11 +20,11 @@ class CurrencyCardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String name = model.nameUZ;
-    if (lang == "UZC") {
+    if (context.locale == const Locale("uz", "UZC")) {
       name = model.nameUZC;
-    } else if (lang == "RU") {
+    } else if (context.locale == const Locale("ru", "RU")) {
       name = model.nameRU;
-    } else if (lang == "EN") {
+    } else if (context.locale == const Locale("en", "EN")) {
       name = model.nameEN;
     }
     return GestureDetector(

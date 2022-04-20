@@ -13,4 +13,5 @@ enum Words {
   langRU,
   langEN,
   name,
+  notFound,
 }

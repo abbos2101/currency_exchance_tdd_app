@@ -4,5 +4,6 @@
   "langUZC": "Ўзбекча",
   "langRU": "Русский",
   "langEN": "English",
-  "name": "Valyuta"
+  "name": "Valyuta",
+  "notFound": "Ma'lumot topilmadi :("
 }

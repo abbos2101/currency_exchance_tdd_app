@@ -4,5 +4,6 @@
   "langUZC": "Ўзбекча",
   "langRU": "Русский",
   "langEN": "English",
-  "name": "Валюта"
+  "name": "Валюта",
+  "notFound": "Маълумот топилмади :("
 }

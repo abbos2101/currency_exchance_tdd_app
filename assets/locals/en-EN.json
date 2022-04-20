@@ -4,5 +4,6 @@
   "langUZC": "Ўзбекча",
   "langRU": "Русский",
   "langEN": "English",
-  "name": "Currency"
+  "name": "Currency",
+  "notFound": "No information found :("
 }

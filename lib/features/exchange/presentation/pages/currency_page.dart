@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/currency/currency_bloc.dart';
+import '../dialogs/calculate_dialog.dart';
 import '../widgets/currency_card_item.dart';
 
 class CurrencyPage extends StatefulWidget {
@@ -90,10 +91,10 @@ class _CurrencyPageState extends State<CurrencyPage> {
               return const Center(child: CupertinoActivityIndicator());
             }
             if (state is EmptyState) {
-              return const Center(
+              return Center(
                 child: Text(
-                  "Ma'lumot topilmadi :(",
-                  style: TextStyle(fontSize: 18),
+                  Words.notFound.tr(),
+                  style: const TextStyle(fontSize: 18),
                 ),
               );
             }
@@ -104,10 +105,11 @@ class _CurrencyPageState extends State<CurrencyPage> {
                 itemBuilder: (context, i) {
                   return CurrencyCardItem(
                     model: state.currencies[i],
-                    lang: context.locale.countryCode ?? "UZ",
                     open: i == state.index,
                     onTap: () => bloc.add(OnTapItemEvent(index: i)),
-                    onTapCalculate: () {},
+                    onTapCalculate: () {
+                      CalculateDialog.show(context, model: state.currencies[i]);
+                    },
                   );
                 },
               );
