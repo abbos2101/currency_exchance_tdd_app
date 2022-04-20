@@ -1,7 +1,6 @@
 import 'package:currency_exchance_tdd_app/core/utils/words.dart';
 import 'package:currency_exchance_tdd_app/features/exchange/domain/entities/currency_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CurrencyCardItem extends StatelessWidget {
   final CurrencyEntity model;
@@ -111,10 +110,10 @@ class CurrencyCardItem extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              SvgPicture.asset(
-                                "assets/calculator.svg",
-                                height: 14,
+                              const Icon(
+                                Icons.calculate,
                                 color: Colors.white,
+                                size: 18,
                               ),
                               const SizedBox(width: 4),
                               Text(

@@ -39,20 +39,49 @@ class _CurrencyPageState extends State<CurrencyPage> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(16),
+              ),
             ),
           ),
           centerTitle: false,
           title: Text(Words.name.tr()),
           actions: [
+            BlocBuilder<CurrencyBloc, CurrencyState>(
+              builder: (context, state) {
+                var initialDate = DateTime.now();
+                if (state is SuccessState) {
+                  initialDate = state.date;
+                }
+                return GestureDetector(
+                  onTap: () async {
+                    final date = await showDatePicker(
+                      context: context,
+                      initialDate: initialDate,
+                      firstDate: DateTime.now().subtract(
+                        const Duration(days: 180),
+                      ),
+                      lastDate: DateTime.now(),
+                    );
+                    if (date != null) {
+                      bloc.add(OnChangeDateEvent(date: date));
+                      bloc.add(GetCurrenciesByDateEvent(date: date));
+                    }
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: const Icon(CupertinoIcons.calendar),
+                );
+              },
+            ),
+            const SizedBox(width: 8),
             GestureDetector(
               onTap: () => ChooseLanguageDialog.show(context),
               behavior: HitTestBehavior.opaque,
               child: const Icon(Icons.language),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 16),
           ],
         ),
         body: BlocBuilder<CurrencyBloc, CurrencyState>(

@@ -28,3 +28,12 @@ class OnTapItemEvent extends CurrencyEvent {
   @override
   List<Object?> get props => [index];
 }
+
+class OnChangeDateEvent extends CurrencyEvent {
+  final DateTime date;
+
+  const OnChangeDateEvent({required this.date});
+
+  @override
+  List<Object?> get props => [date];
+}

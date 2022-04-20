@@ -12,11 +12,16 @@ class LoadingState extends CurrencyState {
 class SuccessState extends CurrencyState {
   final List<CurrencyEntity> currencies;
   final int index;
+  final DateTime date;
 
-  const SuccessState(this.currencies, this.index);
+  const SuccessState({
+    required this.currencies,
+    required this.index,
+    required this.date,
+  });
 
   @override
-  List<Object> get props => [currencies, index];
+  List<Object> get props => [currencies, index, date];
 }
 
 class FailState extends CurrencyState {

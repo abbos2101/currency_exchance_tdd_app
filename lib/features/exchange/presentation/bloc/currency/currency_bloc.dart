@@ -28,6 +28,8 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
           await _emitGetCurrenciesLastEvent(event, emit);
         } else if (event is OnTapItemEvent) {
           await _emitOnTapItemEvent(event, emit);
+        } else if (event is OnChangeDateEvent) {
+          await _emitOnChangeDateEvent(event, emit);
         }
       },
       transformer: sequential(),
@@ -36,6 +38,7 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
 
   List<CurrencyEntity> _currencies = [];
   int _index = -1;
+  DateTime _date = DateTime.now();
 
   Future<void> _emitGetCurrenciesByDateEvent(
     GetCurrenciesByDateEvent event,
@@ -48,7 +51,15 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
       (l) => emit(FailState("$l")),
       (r) {
         _currencies = r;
-        r.isNotEmpty ? emit(SuccessState(r, _index)) : emit(EmptyState());
+        if (_currencies.isNotEmpty) {
+          emit(SuccessState(
+            currencies: _currencies,
+            index: _index,
+            date: _date,
+          ));
+        } else {
+          emit(EmptyState());
+        }
       },
     );
   }
@@ -63,7 +74,15 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
       (l) => emit(FailState("$l")),
       (r) {
         _currencies = r;
-        r.isNotEmpty ? emit(SuccessState(r, _index)) : emit(EmptyState());
+        if (_currencies.isNotEmpty) {
+          emit(SuccessState(
+            currencies: _currencies,
+            index: _index,
+            date: _date,
+          ));
+        } else {
+          emit(EmptyState());
+        }
       },
     );
   }
@@ -73,6 +92,14 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     Emitter<CurrencyState> emit,
   ) async {
     _index = event.index == _index ? -1 : event.index;
-    emit(SuccessState(_currencies, _index));
+    emit(SuccessState(currencies: _currencies, index: _index, date: _date));
+  }
+
+  Future<void> _emitOnChangeDateEvent(
+    OnChangeDateEvent event,
+    Emitter<CurrencyState> emit,
+  ) async {
+    _date = event.date;
+    emit(SuccessState(currencies: _currencies, index: _index, date: _date));
   }
 }
