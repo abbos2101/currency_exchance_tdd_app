@@ -23,21 +23,23 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
     DateTime date,
   ) async {
     if (await networkInfo.isConnected) {
-      try {
-        final currencies = await localDataSource.getCurrenciesByDate(date);
-        return Right(currencies);
-      } catch (_) {}
+      if (DateTime.now().difference(date).inHours > 20) {
+        try {
+          final currencies = await localDataSource.getCurrenciesByDate(date);
+          return Right(currencies);
+        } catch (_) {}
+      }
       try {
         final currencies = await remoteDataSource.getCurrenciesByDate(date);
         await localDataSource.saveCurrenciesByDate(currencies, date);
         return Right(currencies);
-      } on ServerException {
+      } catch (e) {
         return Left(ServerFailure());
       }
     } else {
       try {
         return Right(await localDataSource.getCurrenciesByDate(date));
-      } on CacheException {
+      } catch (e) {
         return Left(CacheFailure());
       }
     }
@@ -50,7 +52,7 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
         final currencies = await remoteDataSource.getCurrenciesLast();
         await localDataSource.saveCurrenciesByDate(currencies, DateTime.now());
         return Right(currencies);
-      } on ServerException {
+      } catch (e) {
         return Left(ServerFailure());
       }
     } else {
@@ -59,7 +61,7 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
           DateTime.now(),
         );
         return Right(currencies);
-      } on CacheException {
+      } catch (e) {
         return Left(CacheFailure());
       }
     }

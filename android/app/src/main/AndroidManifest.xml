@@ -2,7 +2,7 @@
     package="uz.moliya.currency_exchance_tdd_app">
    <application
         android:label="currency_exchance_tdd_app"
-        android:name="${applicationName}"
+        android:name="Valyuta kurslari"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

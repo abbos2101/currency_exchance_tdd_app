@@ -14,4 +14,6 @@ enum Words {
   langEN,
   name,
   notFound,
+  hasError,
+  refresh,
 }

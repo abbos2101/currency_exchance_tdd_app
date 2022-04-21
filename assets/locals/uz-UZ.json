@@ -5,5 +5,7 @@
   "langRU": "Русский",
   "langEN": "English",
   "name": "Valyuta",
-  "notFound": "Ma'lumot topilmadi :("
+  "notFound": "Ma'lumot topilmadi :(",
+  "hasError": "Xatolik sodir bo'ldi :(",
+  "refresh": "Yangilash"
 }

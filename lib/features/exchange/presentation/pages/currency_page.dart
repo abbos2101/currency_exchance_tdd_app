@@ -1,7 +1,6 @@
 import 'package:currency_exchance_tdd_app/core/utils/words.dart';
 import 'package:currency_exchance_tdd_app/di.dart';
 import 'package:currency_exchance_tdd_app/features/exchange/presentation/dialogs/choose_language_dialog.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,26 +98,58 @@ class _CurrencyPageState extends State<CurrencyPage> {
               );
             }
             if (state is SuccessState) {
-              return ListView.builder(
-                itemCount: state.currencies.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, i) {
-                  return CurrencyCardItem(
-                    model: state.currencies[i],
-                    open: i == state.index,
-                    onTap: () => bloc.add(OnTapItemEvent(index: i)),
-                    onTapCalculate: () {
-                      CalculateDialog.show(context, model: state.currencies[i]);
-                    },
-                  );
-                },
+              return RefreshIndicator(
+                onRefresh: () async => bloc.add(const RefreshEvent()),
+                color: Theme.of(context).primaryColor,
+                child: ListView.builder(
+                  itemCount: state.currencies.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, i) {
+                    return CurrencyCardItem(
+                      model: state.currencies[i],
+                      open: i == state.index,
+                      onTap: () => bloc.add(OnTapItemEvent(index: i)),
+                      onTapCalculate: () {
+                        CalculateDialog.show(context,
+                            model: state.currencies[i]);
+                      },
+                    );
+                  },
+                ),
               );
             }
             if (state is FailState) {
               return Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(fontSize: 18),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      Words.hasError.tr(),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 12),
+                    GestureDetector(
+                      onTap: () => bloc.add(const RefreshEvent()),
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          Words.refresh.tr(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }

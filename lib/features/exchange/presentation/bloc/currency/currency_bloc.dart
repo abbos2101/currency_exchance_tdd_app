@@ -26,6 +26,8 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
           await _emitGetCurrenciesByDateEvent(event, emit);
         } else if (event is GetCurrenciesLastEvent) {
           await _emitGetCurrenciesLastEvent(event, emit);
+        } else if (event is RefreshEvent) {
+          await _emitRefreshEvent(event, emit);
         } else if (event is OnTapItemEvent) {
           await _emitOnTapItemEvent(event, emit);
         } else if (event is OnChangeDateEvent) {
@@ -45,7 +47,8 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     Emitter<CurrencyState> emit,
   ) async {
     emit(LoadingState());
-    final params = Params(date: event.date);
+    _date = event.date;
+    final params = Params(date: _date);
     final result = await currenciesByDate.execute(params);
     result.fold(
       (l) => emit(FailState("$l")),
@@ -69,7 +72,32 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     Emitter<CurrencyState> emit,
   ) async {
     emit(LoadingState());
+    _date = DateTime.now();
     final result = await currenciesLast.execute(NoParams());
+    result.fold(
+      (l) => emit(FailState("$l")),
+      (r) {
+        _currencies = r;
+        if (_currencies.isNotEmpty) {
+          emit(SuccessState(
+            currencies: _currencies,
+            index: _index,
+            date: _date,
+          ));
+        } else {
+          emit(EmptyState());
+        }
+      },
+    );
+  }
+
+  Future<void> _emitRefreshEvent(
+    RefreshEvent event,
+    Emitter<CurrencyState> emit,
+  ) async {
+    emit(LoadingState());
+    final params = Params(date: _date);
+    final result = await currenciesByDate.execute(params);
     result.fold(
       (l) => emit(FailState("$l")),
       (r) {

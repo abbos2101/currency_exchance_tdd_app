@@ -65,7 +65,7 @@ class ChooseLanguageDialog extends StatelessWidget {
 
   void onTap(BuildContext context, Locale locale) {
     context.setLocale(locale);
-    Navigator.pop(context);
+    //Navigator.pop(context);
   }
 }
 

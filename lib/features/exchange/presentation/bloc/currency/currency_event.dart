@@ -20,6 +20,13 @@ class GetCurrenciesLastEvent extends CurrencyEvent {
   List<Object?> get props => [];
 }
 
+class RefreshEvent extends CurrencyEvent {
+  const RefreshEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class OnTapItemEvent extends CurrencyEvent {
   final int index;
 
