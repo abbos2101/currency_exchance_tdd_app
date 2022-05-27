@@ -1,16 +1,9 @@
-# currency_exchance_tdd_app
+# Valyuta kurslari
 
-A new Flutter project.
+Bu dastur TDD arxitekturasini o'rganib shu asosida namuna sifatida tayyorlandi. Dasturdan valyuta kurslarini so'mga nisbatini bilishingiz mumkin.
 
-## Getting Started
+## Kerakli resurslar
+- [Google Playdan yuklash](https://play.google.com/store/apps/details?id=uz.moliya.currency_exchance_tdd_app)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Ishlab turgan namuna ko'rinish
+[![pub package](https://github.com/abbos2101/currency_exchance_tdd_app/blob/master/git_resources/intro.gif)](https://github.com/abbos2101/currency_exchance_tdd_app/blob/master/git_resources/intro.gif)
